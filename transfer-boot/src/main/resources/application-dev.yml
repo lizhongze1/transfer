@@ -1,0 +1,26 @@
+server:
+  port: 9999
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://10.20.12.32:27018
+      log-date-path: oplog_timestamp
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 10.20.12.23:9200
+      repositories:
+        enabled: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    initial-size: 5
+    max-idle: 10
+    max-wait: 10000
+    min-idle: 5
+    password: 123456
+    url: jdbc:mysql://localhost:3306/sql_test
+    username: root
+
+moses:
+  mongodb:
+    tables: new
