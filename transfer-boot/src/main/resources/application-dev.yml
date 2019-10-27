@@ -4,13 +4,13 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://10.20.12.32:27018
+      uri: mongodb://10.20.12.32:27018,10.20.12.32:27017,10.20.12.32:27019/new?slaveOk=false&replicaSet=rs0&connectTimeoutMS=30000
       log-date-path: oplog_timestamp
-    elasticsearch:
-      cluster-name: elasticsearch
-      cluster-nodes: 10.20.12.23:9200
-      repositories:
-        enabled: true
+    #elasticsearch:
+      #cluster-name: my-application
+      #cluster-nodes: 10.20.12.23:9300
+      #repositories:
+        #enabled: true
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     initial-size: 5
@@ -21,6 +21,8 @@ spring:
     url: jdbc:mysql://localhost:3306/sql_test
     username: root
 
-moses:
+mg:
   mongodb:
-    tables: new
+    tables: test
+elasticsearch:
+  host: 10.20.12.23:9200
