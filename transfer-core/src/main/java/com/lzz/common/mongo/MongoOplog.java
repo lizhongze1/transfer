@@ -141,10 +141,10 @@ public class MongoOplog implements InitializingBean {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                   elasticsearchService.screenMongoDmlEs(document);
-/*                    CompletableFuture.runAsync(()->
+/*                   elasticsearchService.screenMongoDmlEs(document);*/
+                    CompletableFuture.runAsync(()->
                             elasticsearchService.screenMongoDmlEs(document)
-                    );*/
+                    );
                 }else {
                     log.info("sleep  5s");
                     Thread.sleep(5000);
