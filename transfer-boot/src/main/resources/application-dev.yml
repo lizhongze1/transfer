@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://10.20.12.32:27018,10.20.12.32:27017,10.20.12.32:27019/new?slaveOk=false&replicaSet=rs0&connectTimeoutMS=30000
+      uri: mongodb://10.20.12.32:27018,10.20.12.32:27017,10.20.12.32:27019/test?slaveOk=false&replicaSet=rs0&connectTimeoutMS=30000
       log-date-path: oplog_timestamp
     #elasticsearch:
       #cluster-name: my-application
@@ -23,6 +23,21 @@ spring:
 
 mg:
   mongodb:
-    tables: test
+    tables: test,ELECTRONIC_CERTIFICATE
 elasticsearch:
   host: 10.20.12.23:9200
+
+#logging:
+  #config: classpath:logback.xml
+xxl:
+  job:
+    accessToken: ''
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    executor:
+      appname: xxl-job-executor-sample
+      ip: ''
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: -1
+      port: 8888
+
