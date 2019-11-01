@@ -1,0 +1,361 @@
+<!--
+ * @Descripttion:
+ * @Author: lip
+ * @Date: 2019-08-09 13:19:34
+ * @LastEditors: lip
+ * @LastEditTime: 2019-08-22 09:05:26
+ -->
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="css/hiprint.css" rel="stylesheet" type="text/css" />
+    <link href="css/print-lock.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>模板查看</title>
+    <style>
+        .hinnn-layout, .hinnn-layout * {
+            box-sizing: border-box;
+        }
+
+        .hinnn-layout {
+            display: flex;
+            flex: auto;
+            flex-direction: column;
+        }
+
+        .hinnn-layout.hinnn-layout-has-sider {
+            flex-direction: row;
+        }
+
+        .hinnn-layout-sider {
+            display: flex;
+            flex-direction: row;
+            position: relative;
+            width:20%;
+        }
+
+        .hinnn-layout-content {
+            width:80%;
+            flex: auto;
+        }
+
+        .hinnn-header {
+            position: relative;
+            z-index: 1030;
+            display: block;
+        }
+
+        .wrapper {
+            min-height: 100%;
+        }
+
+        .height-100-per {
+            height: 100%;
+        }
+        /**/
+        .hinnn-docs-sidebar .nav > li > a {
+            display: block;
+            padding: 4px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #767676;
+        }
+
+        .hinnn-docs-sidenav {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+
+        .hinnn-docs-sidebar .nav > .active > ul {
+            display: block;
+        }
+
+        .hinnn-docs-sidebar .nav .nav {
+            display: none;
+            padding-bottom: 10px;
+        }
+
+        .hinnn-docs-sidebar .nav .nav > .active:focus > a,
+        .hinnn-docs-sidebar .nav .nav > .active:hover > a,
+        .hinnn-docs-sidebar .nav .nav > .active > a {
+            padding-left: 28px;
+            font-weight: 500;
+        }
+
+        .hinnn-docs-section > p,
+        .hinnn-docs-section > ul,
+        .hinnn-docs-section > ol,
+        .hinnn-callout > p,
+        .hinnn-callout > ol,
+        .hinnn-callout > ul {
+            line-height: 1.75;
+            margin-bottom: 1.2em;
+        }
+        .hinnn-callout.small-callout {
+            padding: 10px;
+            margin: 10px 0;
+
+            border-left-width: 2px;
+            border-radius: 0px;
+        }
+
+        .hinnn-callout {
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #eee;
+            border-left-width: 5px;
+            border-radius: 3px;
+        }
+
+        .hinnn-callout-danger h4 {
+            color: #ce4844;
+        }
+
+        .hinnn-callout-danger {
+            border-left-color: #ce4844;
+        }
+
+        .hinnn-callout h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .hinnn-callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        .hinnn-callout *:last-child {
+            margin-bottom: 0;
+        }
+
+        .s {
+            color: #d44950;
+        }
+        .na {
+            color: #4f9fcf;
+        }
+
+        .nt {
+            color: #2f6f9f;
+        }
+
+        .c {
+            color: #999;
+        }
+
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #474747;
+        }
+
+        .simpaleExplain {
+            line-height: 1.75;
+            margin-bottom: 1.2em;
+            font-size: 19px;
+            font-weight: 300;
+        }
+        .pre {
+            display: block;
+            padding: 9.5px;
+            margin: 0 0 10px;
+            font-size: 13px;
+            line-height: 1.42857143;
+            color: #ffffff;
+            word-break: break-all;
+            word-wrap: break-word;
+            background-color: #231c1c;
+            border: 1px solid #877878;
+        }
+        code.code{
+            padding: 4px 10px;
+            color: #2a89ed;
+            background-color: #ecf0fa;
+            font-size: 15px;
+        }
+        .hiprint-printPaper.hidroppable.design{
+            background:#fff;
+        }
+        /*bootstrap*/
+        .hinnn-layout.hinnn-layout-has-sider .container-fluid{
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .hinnn-layout.hinnn-layout-has-sider .container{
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .hinnn-layout.hinnn-layout-has-sider .row .col-sm-12{
+            padding-right: 0px;
+        }
+        .hiprint-footerLine{
+            display:none;
+        }
+        .hiprint-printElement.hiprint-printElement-image.reproduction{
+            width:100% !important;
+            height: auto !important;
+        }
+        .rect-printElement-types .hiprint-printElement-type > li.basic > ul > li > a{
+            padding:5px 0;
+            height:32px;
+        }
+        .rect-printElement-types .hiprint-printElement-type > li.professional > ul > li > a{
+            padding:5px 0;
+            height:32px;
+        }
+        .hiprint-printPaper .hiprint-printPaper-content>div.hiprint-printElement-text{
+            z-index:100;
+        }
+        .hiprint-printPaper .hiprint-printPaper-content>div.hiprint-printElement-image{
+            z-index:10;
+        }
+        .hiprint-printPaper .hiprint-printPaper-content>div.hiprint-printElement-image.reproduction{
+            z-index:1;
+        }
+        .prevViewDiv{
+          min-height: 100vh
+        }
+        .hiprint-printPaper{
+          margin: 0 auto
+        }
+        /* 自定义css */
+        .my-buttons{
+          position: fixed;
+          bottom: 100px;
+          right: 100px;
+        }
+        .bottom-button{
+          display: block;
+          width: 60px;
+          height: 60px;
+          background: url('css/image/access.png');
+          margin-top: 10px;
+          cursor: pointer;
+        }
+        .bottom-button-second{
+          background: url('css/image/reject.png');
+          margin-top: 15px;
+        }
+        .el-label{
+          color: #606266;
+          font-size: 14px;
+          font-weight: 400
+        }
+        .el-input{
+          -webkit-appearance: none;
+          background-color: #FFF;
+          background-image: none;
+          border-radius: 4px;
+          border: 1px solid #DCDFE6;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          color: #606266;
+          display: inline-block;
+          font-size: inherit;
+          height: 40px;
+          line-height: 40px;
+          outline: 0;
+          padding: 0 15px;
+          -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+          transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+          width: 100%;
+        }
+        .modal-header{
+          border-bottom: none
+        }
+        .modal-footer{
+          border-top: none
+        }
+        .hiprint-printPaper{
+          background: #fff;
+        }
+    </style>
+</head>
+<body>
+ <div class="prevViewDiv">
+
+ </div>
+ <div class="my-buttons">
+   <div data-toggle="tooltip" title="通过">
+      <a class="bottom-button" data-toggle="modal" onclick="changeD()" data-target="#myModal" ></a>
+   </div>
+   <div data-toggle="tooltip" title="取回">
+      <a class="bottom-button bottom-button-second" onclick="changeR()" data-toggle="modal" data-target="#myModal"></a>
+   </div>
+
+ </div>
+ <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">提示</h4>
+      </div>
+      <div class="modal-body">
+        <label class="el-label" >请输入意见</label>
+        <input class="el-input" id="info" type="text" >
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="submitInfo()" >确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+ <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var editFlag = 'D'
+// var BASEURL =  "http://172.23.3.90:8088/TEMP";
+var BASEURL =  "http://10.20.12.29/licence";
+window.onload = function(){
+  // 后台地址
+  $('[data-toggle="tooltip"]').tooltip();
+  // 请求状态点击 通过是D，退回是R
+  var html = localStorage.getItem('cerTemplateHtml')
+				$('.prevViewDiv').html(html);
+  window.addEventListener("storage", function (e) {
+  var html = localStorage.getItem('cerTemplateHtml')
+				$('.prevViewDiv').html(html);
+  });
+};
+function submitInfo(){
+  var options =  $("#info").val();
+  var id = localStorage.cerId;
+  var status = editFlag
+  if(!options){
+    alert("请输入意见!")
+  }else{
+    $.ajax({
+    url: BASEURL + '/licenceApi/batchCheck?ids='+id+'&status='+status+'&opnion='+options,
+    contentType:'application/json',
+    success:(res) => {
+      if(res.data.status){
+        localStorage.changeFlag = !(localStorage.changeFlag)
+        window.close()
+      }else{
+        alert(res.data.message)
+      }
+
+    },
+    error: err=>{
+      console.log("网络连接错误")
+    }
+  })
+  }
+
+
+}
+function changeD(){
+  editFlag = 'D'
+}
+function changeR(){
+  editFlag = 'R'
+}
+</script>
+
+
+</body>
+</html>
