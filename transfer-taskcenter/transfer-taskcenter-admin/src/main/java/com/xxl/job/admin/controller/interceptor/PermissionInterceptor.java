@@ -25,8 +25,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		
-		if (!(handler instanceof HandlerMethod)) {
+
+/*		if (!(handler instanceof HandlerMethod)) {
 			return super.preHandle(request, response, handler);
 		}
 
@@ -53,7 +53,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 			request.setAttribute(LoginService.LOGIN_IDENTITY_KEY, loginUser);
 		}
 
-		return super.preHandle(request, response, handler);
+		return super.preHandle(request, response, handler);*/
+return true;
 	}
-	
+
 }

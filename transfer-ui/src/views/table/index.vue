@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+
+<!--    <el-select v-model="listQuery.jobGroup" placeholder="表名" class="filter-item">
+
+      <el-option v-for="item in canalClusters" :key="item.jobGroup" :label="item.jobGroup" :value="item.jobGroup" />
+    </el-select>-->
+
+
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -8,46 +15,80 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="序号" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
+      <el-table-column label="描述" >
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.jobDesc }}
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="执行器" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.executorHandler }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
+      <el-table-column label="创建时间" width="200" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+
+          {{scope.row.addTime|formatDate}}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column class-name="状态" label="Status" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+<!--          <el-tag :type="scope.row.triggerStatus | statusFilter">{{ scope.row.triggerStatus }}</el-tag>-->
+          <span v-if="scope.row.triggerStatus == '1'" class="el-button el-button--success el-button--mini">启动中</span>
+          <span v-else-if="scope.row.triggerStatus == '0'" class="el-button el-button--danger el-button--mini">已停止</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column align="center" prop="created_at" label="操作" width="200">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+          <el-dropdown trigger="click">
+            <el-button type="primary" size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right" />
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="handleConfig(scope.row)">停止</el-dropdown-item>
+              <el-dropdown-item @click.native="handleUpdate(scope.row)">编辑</el-dropdown-item>
+              <el-dropdown-item @click.native="handleDelete(scope.row)">删除</el-dropdown-item>
+              <el-dropdown-item @click.native="handleView(scope.row)">查看日志</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
+    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.length" @pagination="fetchData()" />
   </div>
 </template>
 
 <script>
 import { getList } from '@/api/table'
-
+import Pagination from '@/components/Pagination'
 export default {
+    components: { Pagination },
   filters: {
+      formatDate: function (value) {// 时间戳转换日期格式方法
+          if (value == null) {
+              return '';
+          } else {
+              let date = new Date(value);
+              let y = date.getFullYear();// 年
+              let MM = date.getMonth() + 1;// 月
+              MM = MM < 10 ? ('0' + MM) : MM;
+              let d = date.getDate();// 日
+              d = d < 10 ? ('0' + d) : d;
+              let h = date.getHours();// 时
+              h = h < 10 ? ('0' + h) : h;
+              let m = date.getMinutes();// 分
+              m = m < 10 ? ('0' + m) : m;
+              let s = date.getSeconds();// 秒
+              s = s < 10 ? ('0' + s) : s;
+              return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+          }
+          },
+
     statusFilter(status) {
       const statusMap = {
         published: 'success',
@@ -60,7 +101,15 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+        count: 0,
+        listQuery: {
+            jobGroup: 1,
+            triggerStatus: -1,
+            clusterId: null,
+            start: 0,
+            length: 10
+        },
     }
   },
   created() {
@@ -69,11 +118,17 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+      getList(this.listQuery).then(response => {
+          console.log(response.data)
+          this.count=response.recordsTotal
+        this.list = response.data
         this.listLoading = false
       })
-    }
+    },
+
+      handleConfig(row) {
+          this.$router.push('/canalServer/nodeServer/config?clusterId=' + row.id)
+      },
   }
 }
 </script>
