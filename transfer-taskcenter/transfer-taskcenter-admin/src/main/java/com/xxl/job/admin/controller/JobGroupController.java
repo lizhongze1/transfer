@@ -6,6 +6,7 @@ import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobRegistryDao;
+import com.xxl.job.admin.model.BaseModel;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.enums.RegistryConfig;
 import org.springframework.stereotype.Controller;
@@ -34,14 +35,20 @@ public class JobGroupController {
 	@Resource
 	private XxlJobRegistryDao xxlJobRegistryDao;
 
-	@RequestMapping
-	public String index(Model model) {
+	/**
+	 * @Description:获取执行器列表
+	 * @Author: lizz
+	 * @Date: 2019/11/10 13:47
+
+	 **/
+	@RequestMapping("getJobGroupList")
+	@ResponseBody
+	public BaseModel<List<XxlJobGroup>> getJobGroupList() {
 
 		// job group (executor)
 		List<XxlJobGroup> list = xxlJobGroupDao.findAll();
 
-		model.addAttribute("list", list);
-		return "jobgroup/jobgroup.index";
+		return  BaseModel.getInstance(list);
 	}
 
 	@RequestMapping("/save")
