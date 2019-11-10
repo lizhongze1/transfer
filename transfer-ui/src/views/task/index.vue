@@ -3,10 +3,10 @@
 
 <!--    <el-select v-model="listQuery.jobGroup" placeholder="表名" class="filter-item">
 
-      <el-option v-for="item in canalClusters" :key="item.jobGroup" :label="item.jobGroup" :value="item.jobGroup" />
+      <el-option v-for="item in taskInfos" :key="item.jobGroup" :label="item.jobGroup" :value="item.jobGroup" />
     </el-select>-->
 
-
+    <el-button class="filter-item" type="primary" @click="handleCreate()">新建</el-button>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -50,21 +50,40 @@
               操作<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handleConfig(scope.row)">停止</el-dropdown-item>
+<!--              <el-dropdown-item @click.native="handleConfig(scope.row)">停止</el-dropdown-item>-->
               <el-dropdown-item @click.native="handleUpdate(scope.row)">编辑</el-dropdown-item>
-              <el-dropdown-item @click.native="handleDelete(scope.row)">删除</el-dropdown-item>
-              <el-dropdown-item @click.native="handleView(scope.row)">查看日志</el-dropdown-item>
+<!--              <el-dropdown-item @click.native="handleDelete(scope.row)">删除</el-dropdown-item>
+              <el-dropdown-item @click.native="handleView(scope.row)">查看日志</el-dropdown-item>-->
             </el-dropdown-menu>
           </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.length" @pagination="fetchData()" />
+    <!--<pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.length" @pagination="fetchData()" />-->
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="taskInfo.title" />
+        </el-form-item>
+        <el-form-item label="app名称" prop="appName">
+          <el-input v-model="taskInfo.appName" />
+        </el-form-item>
+        <el-form-item label="注册地址" prop="addressList">
+          <el-input v-model="taskInfo.addressList" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dataOperation()">确定</el-button>
+      </div>
+    </el-dialog>
+
+
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/task'
+import { getList ,addtaskInfo,updatetaskInfo} from '@/api/task'
 import Pagination from '@/components/Pagination'
 export default {
     components: { Pagination },
@@ -103,6 +122,24 @@ export default {
       list: null,
       listLoading: true,
         count: 0,
+        dialogFormVisible: false,
+        textMap: {
+            create: '新建',
+            update: '修改'
+        },
+        taskInfo: {
+            id: null,
+            title: null,
+            appName: null,
+            addressList:null
+        },
+        dialogStatus: 'create',
+        rules: {
+            title: [{ required: true, message: '名称不能为空', trigger: 'change' }],
+            appName: [{ required: true, message: 'app名不能为空', trigger: 'change' }],
+            addressList: [{ required: true, message: '注册地址不能为空', trigger: 'change' }]
+
+        },
         listQuery: {
             jobGroup: 1,
             triggerStatus: -1,
@@ -125,7 +162,47 @@ export default {
         this.listLoading = false
       })
     },
-
+      handleCreate() {
+          this.resetModel()
+          this.dialogStatus = 'create'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+              this.$refs['dataForm'].clearValidate()
+          })
+      },
+      dataOperation() {
+          this.$refs['dataForm'].validate((valid) => {
+              if (valid) {
+                  if (this.dialogStatus === 'create') {
+                      addtaskInfo(this.taskInfo).then(res => {
+                          this.operationRes(res)
+                      })
+                  }
+                  if (this.dialogStatus === 'update') {
+                      updatetaskInfo(this.taskInfo).then(res => {
+                          this.operationRes(res)
+                      })
+                  }
+              }
+          })
+      },
+      resetModel() {
+          this.taskInfo = {
+              id: null,
+              name: null,
+              appName: null,
+              addressList:null
+          }
+      },
+      handleUpdate(row) {
+          this.resetModel()
+          this.taskInfo = Object.assign({}, row)
+          this.dialogStatus = 'update'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+              this.$refs['dataForm'].clearValidate()
+          })
+      },
       handleConfig(row) {
           this.$router.push('/canalServer/nodeServer/config?clusterId=' + row.id)
       },

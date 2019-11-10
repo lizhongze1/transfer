@@ -11,6 +11,8 @@ import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.enums.RegistryConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -50,13 +52,19 @@ public class JobGroupController {
 
 		return  BaseModel.getInstance(list);
 	}
+	/**
+	 * @Description:
+	 * @Author: lizz
+	 * @Date: 2019/11/10 18:22
 
+	修改 返回参数i形式
+	 **/
 	@RequestMapping("/save")
 	@ResponseBody
-	public ReturnT<String> save(XxlJobGroup xxlJobGroup){
+	public BaseModel<String> save(@RequestBody  XxlJobGroup xxlJobGroup){
 
 		// valid
-		if (xxlJobGroup.getAppName()==null || xxlJobGroup.getAppName().trim().length()==0) {
+/*		if (xxlJobGroup.getAppName()==null || xxlJobGroup.getAppName().trim().length()==0) {
 			return new ReturnT<String>(500, (I18nUtil.getString("system_please_input")+"AppName") );
 		}
 		if (xxlJobGroup.getAppName().length()<4 || xxlJobGroup.getAppName().length()>64) {
@@ -75,15 +83,15 @@ public class JobGroupController {
 					return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_registryList_unvalid") );
 				}
 			}
-		}
+		}*/
 
 		int ret = xxlJobGroupDao.save(xxlJobGroup);
-		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
+		return BaseModel.getInstance("suess");
 	}
 
 	@RequestMapping("/update")
 	@ResponseBody
-	public ReturnT<String> update(XxlJobGroup xxlJobGroup){
+	public ReturnT<String> update(@RequestBody XxlJobGroup xxlJobGroup){
 		// valid
 		if (xxlJobGroup.getAppName()==null || xxlJobGroup.getAppName().trim().length()==0) {
 			return new ReturnT<String>(500, (I18nUtil.getString("system_please_input")+"AppName") );

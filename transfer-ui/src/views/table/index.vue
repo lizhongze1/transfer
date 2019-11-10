@@ -60,6 +60,26 @@
       </el-table-column>
     </el-table>
     <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.length" @pagination="fetchData()" />
+ <!--   <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="taskInfo.title" />
+        </el-form-item>
+        <el-form-item label="app名称" prop="appName">
+          <el-input v-model="taskInfo.appName" />
+        </el-form-item>
+        <el-form-item label="注册地址" prop="addressList">
+          <el-input v-model="taskInfo.addressList" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dataOperation()">确定</el-button>
+      </div>
+    </el-dialog>-->
+
+
+
   </div>
 </template>
 
