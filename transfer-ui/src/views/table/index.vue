@@ -60,23 +60,63 @@
       </el-table-column>
     </el-table>
     <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.length" @pagination="fetchData()" />
- <!--   <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="600px">
-      <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:30px;">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="taskInfo.title" />
-        </el-form-item>
-        <el-form-item label="app名称" prop="appName">
-          <el-input v-model="taskInfo.appName" />
-        </el-form-item>
-        <el-form-item label="注册地址" prop="addressList">
-          <el-input v-model="taskInfo.addressList" />
-        </el-form-item>
-      </el-form>
+    <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="1000px">
+
+      <el-steps :active="active" finish-status="success"  >
+        <el-step title="步骤 1">
+
+          <template slot="description" v-if="active==1" >
+            <div class="step-row" >
+                        <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:0px;">
+                          <el-form-item label="名称" prop="name">
+                            <el-input v-model="taskInfo.title" />
+                          </el-form-item>
+                          <el-form-item label="app名称" prop="appName">
+                            <el-input v-model="taskInfo.appName" />
+                          </el-form-item>
+                          <el-form-item label="注册地址" prop="addressList">
+                            <el-input v-model="taskInfo.addressList" />
+                          </el-form-item>
+                        </el-form>
+            </div>
+          </template>
+          <template slot="description" v-if="active==2" >
+            <div class="step-row" >
+              <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:0px;">
+                <el-form-item label="名称" prop="name">
+                  <el-input v-model="taskInfo.title" />
+                </el-form-item>
+                <el-form-item label="app名称" prop="appName">
+                  <el-input v-model="taskInfo.appName" />
+                </el-form-item>
+              </el-form>
+            </div>
+          </template>
+
+          <template slot="description" v-if="active==3" >
+            <div class="step-row" >
+              <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:0px;">
+                <el-form-item label="名称" prop="name">
+                  <el-input v-model="taskInfo.title" />
+                </el-form-item>
+                <el-form-item label="app名称" prop="appName">
+                  <el-input v-model="taskInfo.appName" />
+                </el-form-item>
+              </el-form>
+            </div>
+          </template>
+        </el-step>
+        <el-step title="步骤 2" ></el-step>
+
+        <el-step title="步骤 3"></el-step>
+      </el-steps>
+      <el-button style="margin-top: 12px;" @click="previous">上一步</el-button>
+      <el-button style="margin-top: 12px;" @click="next">下一步</el-button>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="dataOperation()">确定</el-button>
       </div>
-    </el-dialog>-->
+    </el-dialog>
 
 
 
@@ -123,6 +163,26 @@ export default {
       list: null,
       listLoading: true,
         count: 0,
+        active: 1,
+
+        dialogFormVisible: true,
+        textMap: {
+            create: '新建',
+            update: '修改'
+        },
+        taskInfo: {
+            id: null,
+            title: null,
+            appName: null,
+            addressList:null
+        },
+        dialogStatus: 'create',
+        rules: {
+            title: [{ required: true, message: '名称不能为空', trigger: 'change' }],
+            appName: [{ required: true, message: 'app名不能为空', trigger: 'change' }],
+            addressList: [{ required: true, message: '注册地址不能为空', trigger: 'change' }]
+
+        },
         listQuery: {
             jobGroup: 1,
             triggerStatus: -1,
@@ -145,7 +205,12 @@ export default {
         this.listLoading = false
       })
     },
-
+      next() {
+          if (this.active++ > 2) this.active = 3;
+      },
+      previous(){
+          if (this.active-- == 1) this.active = 1;
+      },
       handleConfig(row) {
           this.$router.push('/canalServer/nodeServer/config?clusterId=' + row.id)
       },
