@@ -68,7 +68,7 @@
           <template slot="description" v-if="active==1" >
             <div class="step-row" >
                         <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:0px;">
-                          <el-form-item label="名称" prop="name">
+        <!--                  <el-form-item label="名称" prop="name">
                             <el-input v-model="taskInfo.title" />
                           </el-form-item>
                           <el-form-item label="app名称" prop="appName">
@@ -76,7 +76,18 @@
                           </el-form-item>
                           <el-form-item label="注册地址" prop="addressList">
                             <el-input v-model="taskInfo.addressList" />
-                          </el-form-item>
+                          </el-form-item>-->
+
+<!--                          <el-select v-model="listQuery.jobGroupId" placeholder="所选节点" class="filter-item">
+                            <el-option key="" label="所选节点" value="" />
+                            <el-option-group v-for="group in options" :key="group.id" :label="group.title">
+                              <el-option v-for="item in group.options" :key="item.id" :label="item.title" :value="item.value" />
+                            </el-option-group>
+                          </el-select>-->
+
+                              <el-select v-model="listQuery.jobGroupId" placeholder="所选节点" class="filter-item">
+                                <el-option v-for="item in options" :key="item.id" :label="item.title" :value="item.title" />
+                              </el-select>
                         </el-form>
             </div>
           </template>
@@ -124,7 +135,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getList,getTaskGroup } from '@/api/table'
 import Pagination from '@/components/Pagination'
 export default {
     components: { Pagination },
@@ -183,16 +194,22 @@ export default {
             addressList: [{ required: true, message: '注册地址不能为空', trigger: 'change' }]
 
         },
+        options: [],
         listQuery: {
             jobGroup: 1,
             triggerStatus: -1,
-            clusterId: null,
+            jobGroupId: null,
             start: 0,
             length: 10
         },
     }
   },
   created() {
+      getTaskGroup().then((res) => {
+          //console.log("+++++"+res);
+          this.options = res.data
+          // console.log(res.data);
+      })
     this.fetchData()
   },
   methods: {

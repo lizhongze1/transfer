@@ -6,4 +6,13 @@ export function getList(params) {
     method: 'post',
     params
   })
+
+}
+export function getTaskGroup(params) {
+  return request({
+    url: '/jobgroup/getJobGroupList',
+    method: 'post',
+    params
+  })
+
 }
