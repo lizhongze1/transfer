@@ -175,6 +175,8 @@ export default {
               if (valid) {
                   if (this.dialogStatus === 'create') {
                       addtaskInfo(this.taskInfo).then(res => {
+                          console.log("111111111111111||||"+res)
+
                           this.operationRes(res)
                       })
                   }
@@ -186,6 +188,26 @@ export default {
               }
           })
       },
+
+      operationRes(res) {
+          console.log("value================")
+          console.log(res)
+          //alert(res)
+          if (res.data === 'success') {
+              this.fetchData()
+              this.dialogFormVisible = false
+              this.$message({
+                  message: this.textMap[this.dialogStatus] + '成功',
+                  type: 'success'
+              })
+          } else {
+              this.$message({
+                  message: this.textMap[this.dialogStatus] + '失败',
+                  type: 'error'
+              })
+          }
+      },
+
       resetModel() {
           this.taskInfo = {
               id: null,

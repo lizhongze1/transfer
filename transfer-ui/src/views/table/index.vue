@@ -5,7 +5,7 @@
 
       <el-option v-for="item in canalClusters" :key="item.jobGroup" :label="item.jobGroup" :value="item.jobGroup" />
     </el-select>-->
-
+    <el-button class="filter-item" type="primary" @click="handleCreate()">新建</el-button>
 
     <el-table
       v-loading="listLoading"
@@ -59,7 +59,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.length" @pagination="fetchData()" />
+    <pagination v-show="count>0" :total="count" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="fetchData()" />
     <el-dialog :visible.sync="dialogFormVisible" :title="textMap[dialogStatus]" width="1000px">
 
       <el-steps :active="active" finish-status="success"  >
@@ -84,10 +84,35 @@
                               <el-option v-for="item in group.options" :key="item.id" :label="item.title" :value="item.value" />
                             </el-option-group>
                           </el-select>-->
-
-                              <el-select v-model="listQuery.jobGroupId" placeholder="所选节点" class="filter-item">
-                                <el-option v-for="item in options" :key="item.id" :label="item.title" :value="item.title" />
+ <!--                         <el-option key="" label="所属集群" value="" />
+                          <el-option key="-1" label="单机" value="-1" />-->
+                          <el-form-item label="所选节点" >
+<!--                          <el-option v-for="item in canalClusters" :key="item.id" :label="item.name" :value="item.id"/>-->
+                              <el-select v-model="taskInfo.jobGroup" placeholder="所选节点" class="filter-item">
+                                <el-option v-for="item in options" :key="item.id" :label="item.title" :value="item.id" />
                               </el-select>
+                          </el-form-item>
+                              <el-form-item label="描述" prop="name">
+                                <el-input v-model="taskInfo.jobDesc" />
+                              </el-form-item>
+                              <el-form-item label="路由策略" prop="name">
+                                <el-input v-model="taskInfo.executorRouteStrategy" />
+                              </el-form-item>
+                          <el-form-item label="cron表达式" prop="name">
+                            <el-input v-model="taskInfo.jobCron" />
+                          </el-form-item>
+                          <el-form-item label="运行模式" prop="name">
+                            <el-input v-model="taskInfo.glueType" />
+                          </el-form-item>
+                          <el-form-item label="beanname" prop="name">
+                            <el-input v-model="taskInfo.executorHandler" />
+                          </el-form-item>
+                          <el-form-item label="执行模式" prop="name">
+                            <el-input v-model="taskInfo.executorBlockStrategy" />
+                          </el-form-item>
+                          <el-form-item label="负责人" prop="name">
+                            <el-input v-model="taskInfo.author" />
+                          </el-form-item>
                         </el-form>
             </div>
           </template>
@@ -135,7 +160,7 @@
 </template>
 
 <script>
-import { getList,getTaskGroup } from '@/api/table'
+import { getList,getTaskGroup,addtaskInfo,updatetaskInfo } from '@/api/table'
 import Pagination from '@/components/Pagination'
 export default {
     components: { Pagination },
@@ -176,7 +201,7 @@ export default {
         count: 0,
         active: 1,
 
-        dialogFormVisible: true,
+        dialogFormVisible: false,
         textMap: {
             create: '新建',
             update: '修改'
@@ -185,8 +210,16 @@ export default {
             id: null,
             title: null,
             appName: null,
-            addressList:null
+            addressList:null,
+            executorRouteStrategy: "ROUND",
+            jobCron:"* * * * * ?",
+            glueType:"BEAN",
+            executorHandler:"demoJobHandler1",
+            executorBlockStrategy:"SERIAL_EXECUTION",
+            author:"SERIAL_EXECUTION",
         },
+
+
         dialogStatus: 'create',
         rules: {
             title: [{ required: true, message: '名称不能为空', trigger: 'change' }],
@@ -199,8 +232,9 @@ export default {
             jobGroup: 1,
             triggerStatus: -1,
             jobGroupId: null,
-            start: 0,
-            length: 10
+
+            size: 10,
+            page: 0,
         },
     }
   },
@@ -222,6 +256,65 @@ export default {
         this.listLoading = false
       })
     },
+
+      dataOperation() {
+          this.$refs['dataForm'].validate((valid) => {
+              if (valid) {
+                  if (this.dialogStatus === 'create') {
+                      addtaskInfo(this.taskInfo).then(res => {
+                          this.operationRes(res)
+                      })
+                  }
+                  if (this.dialogStatus === 'update') {
+                      updatetaskInfo(this.taskInfo).then(res => {
+                          this.operationRes(res)
+                      })
+                  }
+              }
+          })
+      },
+      operationRes(res) {
+          console.log("value================")
+          console.log(res)
+          //alert(res)
+          if (res.data === 'suess') {
+              this.fetchData()
+              this.dialogFormVisible = false
+              this.$message({
+                  message: this.textMap[this.dialogStatus] + '成功',
+                  type: 'success'
+              })
+          } else {
+              this.$message({
+                  message: this.textMap[this.dialogStatus] + '失败',
+                  type: 'error'
+              })
+          }
+      },
+
+      handleCreate() {
+          this.resetModel()
+          this.dialogStatus = 'create'
+          this.dialogFormVisible = true
+          this.$nextTick(() => {
+              this.$refs['dataForm'].clearValidate()
+          })
+      },
+
+      resetModel() {
+          this.taskInfo= {
+              id: null,
+                  title: null,
+                  appName: null,
+                  addressList:null,
+                  executorRouteStrategy: "ROUND",
+                  jobCron:"* * * * * ?",
+                  glueType:"BEAN",
+                  executorHandler:"demoJobHandler1",
+                  executorBlockStrategy:"SERIAL_EXECUTION",
+                  author:"SERIAL_EXECUTION",
+          }
+      },
       next() {
           if (this.active++ > 2) this.active = 3;
       },

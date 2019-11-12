@@ -16,3 +16,17 @@ export function getTaskGroup(params) {
   })
 
 }
+export function addtaskInfo(data) {
+  return request({
+    url: '/jobinfo/add',
+    method: 'post',
+    data
+  })
+}
+export function updatetaskInfo(data) {
+  return request({
+    url: '/jobgroup/update',
+    method: 'post',
+    data
+  })
+}

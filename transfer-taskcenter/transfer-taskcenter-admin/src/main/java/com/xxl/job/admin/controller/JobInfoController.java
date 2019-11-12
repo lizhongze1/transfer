@@ -10,6 +10,7 @@ import com.xxl.job.admin.core.thread.JobTriggerPoolHelper;
 import com.xxl.job.admin.core.trigger.TriggerTypeEnum;
 import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
+import com.xxl.job.admin.model.BaseModel;
 import com.xxl.job.admin.service.LoginService;
 import com.xxl.job.admin.service.XxlJobService;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -18,15 +19,15 @@ import com.xxl.job.core.glue.GlueTypeEnum;
 import com.xxl.job.core.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.*;
-
+import com.xxl.job.admin.model.Pager;
 /**
  * index controller
  * @author xuxueli 2015-12-19 16:13:16
@@ -39,7 +40,7 @@ public class JobInfoController {
 	private XxlJobGroupDao xxlJobGroupDao;
 	@Resource
 	private XxlJobService xxlJobService;
-	
+
 	@RequestMapping
 	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "-1") int jobGroup) {
 
@@ -89,46 +90,60 @@ public class JobInfoController {
 			throw new RuntimeException(I18nUtil.getString("system_permission_limit") + "[username="+ loginUser.getUsername() +"]");
 		}
 	}
-	
+	/**
+	 * @Description:传参有待优化
+	 * @Author: lizz
+	 * @Date: 2019/11/12 22:36
+
+
+	 **/
 	@RequestMapping("/pageList")
 	@ResponseBody
-	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,  
-			@RequestParam(required = false, defaultValue = "10") int length,
-			int jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {
-		
-		return xxlJobService.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
+/*	public Pager<Map<String, Object>>pageList(@RequestParam(required = false, defaultValue = "0") int start,
+			@RequestParam(required = false, defaultValue = "10") int length,			int jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {*/
+	public Map<String, Object>pageList(Pager<Map<String, Object>> pager
+			,int jobGroup, int triggerStatus, String jobDesc, String executorHandler, String author) {
+
+		return xxlJobService.pageList(pager, jobGroup, triggerStatus, jobDesc, executorHandler, author);
 	}
-	
+	/**
+	 * @Description: 修改 暂时没做返回判断  以后写切面
+	 * @Author: lizz
+	 * @Date: 2019/11/12 21:07
+
+
+	 **/
 	@RequestMapping("/add")
 	@ResponseBody
-	public ReturnT<String> add(XxlJobInfo jobInfo) {
-		return xxlJobService.add(jobInfo);
+	public BaseModel<String> add(@RequestBody XxlJobInfo jobInfo) {
+		 xxlJobService.add(jobInfo);
+		return BaseModel.getInstance("suess");
 	}
-	
+
 	@RequestMapping("/update")
 	@ResponseBody
 	public ReturnT<String> update(XxlJobInfo jobInfo) {
 		return xxlJobService.update(jobInfo);
 	}
-	
+
 	@RequestMapping("/remove")
 	@ResponseBody
 	public ReturnT<String> remove(int id) {
 		return xxlJobService.remove(id);
 	}
-	
+
 	@RequestMapping("/stop")
 	@ResponseBody
 	public ReturnT<String> pause(int id) {
 		return xxlJobService.stop(id);
 	}
-	
+
 	@RequestMapping("/start")
 	@ResponseBody
 	public ReturnT<String> start(int id) {
 		return xxlJobService.start(id);
 	}
-	
+
 	@RequestMapping("/trigger")
 	@ResponseBody
 	//@PermissionLimit(limit = false)
@@ -162,5 +177,5 @@ public class JobInfoController {
 		}
 		return new ReturnT<List<String>>(result);
 	}
-	
+
 }
