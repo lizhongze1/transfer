@@ -116,6 +116,7 @@ public class JobInfoController {
 	@RequestMapping("/add")
 	@ResponseBody
 	public BaseModel<String> add(@RequestBody XxlJobInfo jobInfo) {
+		 jobInfo.executorParamJsToString();
 		 xxlJobService.add(jobInfo);
 		return BaseModel.getInstance("suess");
 	}

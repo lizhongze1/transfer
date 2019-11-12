@@ -114,30 +114,42 @@
                             <el-input v-model="taskInfo.author" />
                           </el-form-item>
                         </el-form>
+
+                <el-form-item label="esip" v-if="taskInfo.executorParamJs">
+                  <el-input v-model="taskInfo.executorParamJs.esIp" />
+                </el-form-item>
+
             </div>
           </template>
           <template slot="description" v-if="active==2" >
             <div class="step-row" >
               <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:0px;">
-                <el-form-item label="名称" prop="name">
-                  <el-input v-model="taskInfo.title" />
+<!--                <el-form-item label="esip" >
+                  <el-input v-model="taskInfo.executorParamJs.esIp" />
                 </el-form-item>
-                <el-form-item label="app名称" prop="appName">
-                  <el-input v-model="taskInfo.appName" />
-                </el-form-item>
+                <el-form-item label="mongoip">
+                  <el-input v-model="taskInfo.executorParamJs.mongoIp" />
+                </el-form-item>-->
+                <template  v-if="taskInfo">
+                  <el-form-item label="esip" v-if="taskInfo.executorParamJs">
+                    <el-input v-model="taskInfo.executorParamJs.esIp" />
+                  </el-form-item>
+                </template>
               </el-form>
             </div>
           </template>
 
-          <template slot="description" v-if="active==3" >
+          <template slot="description" v-if="active==2" >
             <div class="step-row" >
               <el-form ref="dataForm" :rules="rules" :model="taskInfo" label-position="left" label-width="120px" style="width: 400px; margin-left:0px;">
-                <el-form-item label="名称" prop="name">
-                  <el-input v-model="taskInfo.title" />
-                </el-form-item>
-                <el-form-item label="app名称" prop="appName">
-                  <el-input v-model="taskInfo.appName" />
-                </el-form-item>
+   <!--             <template  v-if="taskInfo">
+                  <el-form-item label="esip" v-if="taskInfo.executorParamJs">
+                    <el-input v-model="taskInfo.executorParamJs.esIp" />
+                  </el-form-item>
+                </template>-->
+<!--                <el-form-item label="mongoip">
+                  <el-input v-model="taskInfo.executorParamJs.mongoIp" />
+                </el-form-item>-->
               </el-form>
             </div>
           </template>
@@ -217,6 +229,7 @@ export default {
             executorHandler:"demoJobHandler1",
             executorBlockStrategy:"SERIAL_EXECUTION",
             author:"SERIAL_EXECUTION",
+            executorParamJs:{esIp:null, mongoIp:null},
         },
 
 
@@ -303,7 +316,7 @@ export default {
 
       resetModel() {
           this.taskInfo= {
-              id: null,
+                  id: null,
                   title: null,
                   appName: null,
                   addressList:null,
@@ -313,6 +326,7 @@ export default {
                   executorHandler:"demoJobHandler1",
                   executorBlockStrategy:"SERIAL_EXECUTION",
                   author:"SERIAL_EXECUTION",
+                  executorParamJs:{esIp:null, mongoIp:null},
           }
       },
       next() {

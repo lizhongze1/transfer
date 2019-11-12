@@ -1,5 +1,7 @@
 package com.xxl.job.admin.core.model;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.alibaba.fastjson.JSONObject;
 import java.util.Date;
 
 /**
@@ -8,16 +10,16 @@ import java.util.Date;
  * @author xuxueli  2016-1-12 18:25:49
  */
 public class XxlJobInfo {
-	
+
 	private int id;				// 主键ID
-	
+
 	private int jobGroup;		// 执行器主键ID
 	private String jobCron;		// 任务执行CRON表达式
 	private String jobDesc;
-	
+
 	private Date addTime;
 	private Date updateTime;
-	
+
 	private String author;		// 负责人
 	private String alarmEmail;	// 报警邮件
 
@@ -27,7 +29,7 @@ public class XxlJobInfo {
 	private String executorBlockStrategy;	// 阻塞处理策略
 	private int executorTimeout;     		// 任务执行超时时间，单位秒
 	private int executorFailRetryCount;		// 失败重试次数
-	
+
 	private String glueType;		// GLUE类型	#com.xxl.job.core.glue.GlueTypeEnum
 	private String glueSource;		// GLUE源代码
 	private String glueRemark;		// GLUE备注
@@ -38,7 +40,7 @@ public class XxlJobInfo {
 	private int triggerStatus;		// 调度状态：0-停止，1-运行
 	private long triggerLastTime;	// 上次调度时间
 	private long triggerNextTime;	// 下次调度时间
-
+	private JSONObject executorParamJs ;
 
 	public int getId() {
 		return id;
@@ -214,5 +216,10 @@ public class XxlJobInfo {
 
 	public void setTriggerNextTime(long triggerNextTime) {
 		this.triggerNextTime = triggerNextTime;
+	}
+
+
+	public void executorParamJsToString(){
+		this.executorParam=executorParamJs.toString();
 	}
 }
