@@ -42,6 +42,14 @@ public class XxlJobInfo {
 	private long triggerNextTime;	// 下次调度时间
 	private JSONObject executorParamJs ;
 
+	public void setExecutorParamJs(JSONObject executorParamJs) {
+		this.executorParamJs = executorParamJs;
+	}
+
+	public JSONObject getExecutorParamJs() {
+		return executorParamJs;
+	}
+
 	public int getId() {
 		return id;
 	}

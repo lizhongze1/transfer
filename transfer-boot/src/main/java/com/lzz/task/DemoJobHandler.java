@@ -1,5 +1,6 @@
 package com.lzz.task;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lzz.common.index.ElasticsearchIndexImpl;
 import com.mongodb.BasicDBObject;
 import com.mongodb.CursorType;
@@ -41,6 +42,7 @@ public class DemoJobHandler extends IJobHandler {
 	private MongoClient mongoClient = null;
 	@Override
 	public ReturnT<String> execute(String param) throws Exception {
+		JSONObject jsStr = JSONObject.parseObject(param);
 		XxlJobLogger.log("XXL-JOB, Hello World.");
 		XxlJobLogger.log("--------------"+param);
 		 String mongodbUri="mongodb://10.20.12.32:27018,10.20.12.32:27017,10.20.12.32:27019/test?slaveOk=false&replicaSet=rs0&connectTimeoutMS=30000";
