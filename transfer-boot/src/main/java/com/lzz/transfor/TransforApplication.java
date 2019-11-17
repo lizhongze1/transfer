@@ -11,15 +11,16 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.lzz"})
-public class TransforApplication implements CommandLineRunner {
+//public class TransforApplication implements CommandLineRunner {
+public class TransforApplication  {
     @Autowired
     private MongoOplog MongoOplog;
     public static void main(String[] args) {
         SpringApplication.run(TransforApplication.class, args);
     }
 
-    @Override
+/*    @Override
     public void run(String... args){
         MongoOplog.run();
-    }
+    }*/
 }

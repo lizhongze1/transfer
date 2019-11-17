@@ -1,3 +1,4 @@
+/*
 package com.lzz.task;
 
 import com.lzz.entity.Datacolumn;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+*/
 /**
  *
  * 　  * @className: SqlServerTransfer
@@ -29,7 +31,8 @@ import java.util.GregorianCalendar;
  * 　　* @author lizz
  * 　　* @date  15:04
  *
- */
+ *//*
+
 @JobHandler(value="sqlServerTransfer")
 @Component
 public class SqlServerTransfer extends IJobHandler {
@@ -193,3 +196,4 @@ public class SqlServerTransfer extends IJobHandler {
 
 
 }
+*/

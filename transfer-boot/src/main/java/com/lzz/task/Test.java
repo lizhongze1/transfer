@@ -15,12 +15,19 @@ import java.util.GregorianCalendar;
 public class Test {
 	public static void main(String[] args) {
 		try {
+			String strHex3 = "E0330";
+			//将十六进制转化成十进制
+			int valueTen2 = Integer.parseInt(strHex3,16);
+			//long tim = System.currentTimeMillis()/1000;
+			System.out.println(valueTen2);
+			System.out.println(System.currentTimeMillis());
 			Class.forName("com.microsoft.jdbc.sqlserver.SQLServerDriver");
 					//.newInstance();
 			Connection con = DriverManager
 					.getConnection(
-							"jdbc:microsoft:sqlserver://172.20.18.134:1433;databaseName=MASTER1",
-							"sa", "1qaz2wsx!");
+							//"jdbc:microsoft:sqlserver://172.20.18.134:1433;databaseName=MASTER1",
+							"jdbc:microsoft:sqlserver://10.20.12.8:1433;databaseName=ecis",
+							"sa", "123");
 			Datacolumn[] columns = new Datacolumn[] {
 					new Datacolumn("id", Types.INTEGER),
 					new Datacolumn("code", Types.CHAR, 10),
@@ -29,7 +36,7 @@ public class Test {
 					new Datacolumn("memo", Types.VARCHAR) };
 
 			PreparedStatement pstm = con
-					.prepareStatement("SELECT allocunitname,operation,[RowLog Contents 0] as r0,[RowLog Contents 1]as r1 from::fn_dblog (null, null) where  operation in('LOP_INSERT_ROWS','LOP_DELETE_ROWS')");
+					.prepareStatement("SELECT allocunitname,operation,[RowLog Contents 0] as r0,[RowLog Contents 1]as r1 from::fn_dblog (null, null) where  allocunitname='dbo.Table_2' and operation in('LOP_INSERT_ROWS','LOP_DELETE_ROWS')");
 			ResultSet rs = pstm.executeQuery();
 			while (rs.next()) {
 
@@ -115,6 +122,7 @@ public class Test {
 		// 接下来,每两个字节保存一个变长字段的结束位置,
 		// 所以第一个变长字段的开始位置可以算出来
 		short startIndex = (short) (index + tempvarchar1 * 2);
+       // short startIndex = (short) (index + tempvarchar1);
 		// 第一个变长字段的结束位置也可以算出来
 		byte[] bytevarchar2 = new byte[] { data[index+1], data[index] };
 		short  tempvarchar2 = byteArrayToint16(bytevarchar2);
