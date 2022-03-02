@@ -3,6 +3,8 @@ package com.lzz.connector;
 import com.alibaba.fastjson.JSONObject;
 import com.lzz.entity.ConnTypeInfo;
 
+import java.io.IOException;
+
 /**
  *
  * 　  * @className: ConnectorFrom
@@ -16,5 +18,5 @@ import com.lzz.entity.ConnTypeInfo;
  *
  */
 public interface ConnectorFrom {
-    void handle(ConnTypeInfo connTypeInfo);
+    void handle(ConnTypeInfo connTypeInfo) throws IOException;
 }
